@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Await, Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify";
 const Signup = () => {
   
+  let navigate = useNavigate()
   const [credentials,setcredentials] = useState({name: "",email: "",password: "",geolocation: ""})
-
   const handleSubmit =async(e)=>{
     e.preventDefault();
     // console.log(JSON.stringify({name:credentials.name,email:credentials.email,password:credentials.password,location:credentials.geolocation}))
@@ -15,12 +15,22 @@ const Signup = () => {
       },
       body:JSON.stringify({name:credentials.name,email:credentials.email,  location:credentials.geolocation,password:credentials.password})
     })
-    const json= await response.json()
-    console.log(json);
-
-    if(!json.success){
-      alert("Enter valid value ")
+    const json = await response.json();
+    // console.log(json);
+    if (!json.success) {
+      toast.error('please enter valid details', {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "dark",
+      });
+      return;
     }
+    navigate("/Login");
+    toast.success('User Successfull Created', {
+      position: "top-center",
+      autoClose: 4000,
+      theme: "dark",
+    });
   }
   const onChange =(event)=>{
     setcredentials({...credentials,[event.target.name]:event.target.value})
@@ -101,11 +111,14 @@ const Signup = () => {
             </div>
 
             <div>
-              <button
+             
+
+              <button 
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-5"
-              >
+                >
                 Sign in
               </button>
+               
             </div>
           </form>
               <div className='w-full mt-[4vh]'>

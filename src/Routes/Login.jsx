@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const [credentials, setcredentials] = useState({ email: "", password: "", })
@@ -16,14 +17,27 @@ const Login = () => {
       body: JSON.stringify({ email: credentials.email, password: credentials.password })
     })
     const json = await response.json()
-    console.log(json);
+    // console.log(json);
 
     if (!json.success) {
-      alert("Enter valid value ")
+      // alert("Enter valid value ")
+      toast.error('please enter valid details', {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "dark",
+        });
     }
     if (json.success) {
+      localStorage.setItem("userEmail",credentials.email)
       localStorage.setItem("authtoken",json.authtoken)
-      console.log(localStorage.getItem("authtoken"))
+      // console.log(localStorage.getItem("authtoken"))
+
+      toast.success('User Successfull Login', {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "dark",
+        });
+        
      navigate("/");
     }
   }

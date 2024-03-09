@@ -7,9 +7,21 @@ const mongoDB =async() => {
     else{
     console.log("connected");
     const featch=await mongoose.connection.db.collection("Food_items")
-    featch.find({}).toArray(function(err,data){
-      if(err)console.log(err)
-      else console.log();
+    featch.find({}).toArray(async function(err,data){
+      
+      const foodCategory = await mongoose.connection.db.collection("Food_category")
+      foodCategory.find({}).toArray(function(err,CatData){
+        if(err)console.log(err)
+        else {
+          global.Food_items =data;
+          global.Food_category =CatData;
+        }
+      })
+      // if(err)console.log(err)
+      // else {
+      //   global.food_items =data;
+      
+      // }
 
     })
   }

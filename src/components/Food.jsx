@@ -1,97 +1,81 @@
-import React from 'react'
+import React, { useState,useRef, useEffect } from 'react'
+import {useDispatchCart, useCart} from './ContextReducer'
+const Food = (props) => {
+  let dispatch= useDispatchCart();
+  let data=useCart();
+  const priceRef =useRef()
+  let options =props.options;
+  let priceOptions = Object.keys(options)
 
-const Food = () => {
+  const [qty,setQty]=useState(1)
+  const[size,setsize]=useState("")
+
+  const handleaddcart=async()=>{
+    let food=[]
+    for(const item of data){
+      if(item.id === props.foodItems._id){
+        food = item;
+        break;
+      }
+    }
+
+    if(food !== []) {
+      if(food.size === size){
+        await dispatch({type: "UPDATE", id:props.foodItems._id, price: finalPrice,qty:qty})
+        return
+      }
+    else if(food.size !==size){
+      await dispatch({type:"ADD",id:props.foodItems._id,name:props.foodItems.name,price:finalPrice,qty:qty,size:size,img:props.foodItems.img})
+      return
+    }
+    return
+    }
+    await dispatch({type:"ADD",id:props.foodItems._id,name:props.foodItems.name,price:finalPrice, qty:qty ,size:size,img:props.foodItems.img})
+    // await dispatch({ type: "ADD", id:props.foodItem._id, name: foodItem.name, price: finalPrice, qty: qty, size: size,img:props.fooditem.img })
+  }
+  let finalPrice= qty* parseInt(options[size]);
+  useEffect(()=>{
+    setsize(priceRef.current.value)
+  },[])
+
   return (
-        <div className="bg-gray-200">
-  <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-    <h2 className="sr-only">Products</h2>
+    <div className="mt-8 cursor-pointer">
+    
+      <div className="flex flex-col bg-gray-100 border shadow-sm rounded-lg dark:bg-slate-900 dark:border-gray-700 dark:shadow-slate-700/[.9] overflow-hidden">
+  <img className="w-full h-60 rounded-t-md cursor-pointer  hover:scale-105 transition-all ease-out duration-200" src={props.foodItems.img} alt="Image Description"/>
+  <div className="p-4 md:p-5">
+    <h3 className="text-lg font-bold text-gray-800 dark:text-white">
+      {props.foodItems.name}
+    </h3>
+    <div className='flex justify-between items-center'>
 
-    <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-      <div>
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-          <img src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-        </div>
-        <h3 className="mt-4 text-sm text-gray-700">Earthen Bottle</h3>
-        <p className="mt-1 text-lg font-medium text-gray-900">$48</p>
-        
-        <div className='inline-flex '>
-        <select className='border-black border-2 rounded '>
-            {Array.from(Array(6),(e,i)=>{
-                return(
-                    <option key={i+1} value={i+1}> {i+1} </option>
-                    )
-                })}
-        </select>
-        <select className='ml-4 border-black border-2 rounded'>
-            <option value="half">Half</option>
-            <option value="full">Full</option>
-        </select>
-        <h5 className='ml-'>total price</h5>
-        </div>
+    <select className='rounded bg-slate-200'
+    onChange={(e) => setQty(e.target.value)}>
+    {Array.from(Array(5),(e,i)=>{
+      return(
+        <option key={i+1} value={i+1}>{i+1}</option>
+        )
+      })}
+    </select>
+    <select className='border-gray-600 rounded mb-2 bg-slate-200'ref={priceRef} onChange={(e)=>setsize(e.target.value)}>
+      {priceOptions.map((data)=>{
+        return <option key={data} value={data}>{data}</option>
+      })}
+    </select>
       </div>
-        
-     <div>
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-          <img src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg" alt="Olive drab green insulated bottle with flared screw lid and flat top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-        </div>
-        <h3 className="mt-4 text-sm text-gray-700">Nomad Tumbler</h3>
-        <p className="mt-1 text-lg font-medium text-gray-900">$35</p>
-        <select className='border-black border-2 rounded '>
-            {Array.from(Array(6),(e,i)=>{
-                return(
-                    <option key={i+1} value={i+1}> {i+1} </option>
-                )
-            })}
-        </select>
-        <select className='ml-4 border-black border-2 rounded'>
-            <option value="half">Half</option>
-            <option value="full">Full</option>
-        </select>
-     </div>
-      <div>
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-          <img src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg" alt="Person using a pen to cross a task off a productivity paper card." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-        </div>
-        <h3 className="mt-4 text-sm text-gray-700">Focus Paper Refill</h3>
-        <p className="mt-1 text-lg font-medium text-gray-900">$89</p>
-        <select className='border-black border-2 rounded '>
-            {Array.from(Array(6),(e,i)=>{
-                return(
-                    <option key={i+1} value={i+1}> {i+1} </option>
-                )
-            })}
-        </select>
-        <select className='ml-4 border-black border-2 rounded'>
-            <option value="half">Half</option>
-            <option value="full">Full</option>
-        </select>
-      </div>
-      
-      <div>
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-          <img src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg" alt="Hand holding black machined steel mechanical pencil with brass tip and top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-        </div>
-        <h3 className="mt-4 text-sm text-gray-700">Machined Mechanical Pencil</h3>
-        <p className="mt-1 text-lg font-medium text-gray-900">$35</p>
-        <select className='border-black border-2 rounded '>
-            {Array.from(Array(6),(e,i)=>{
-                return(
-                    <option key={i+1} value={i+1}> {i+1} </option>
-                )
-            })}
-        </select>
-        <select className='ml-4 border-black border-2 rounded'>
-            <option value="half">Half</option>
-            <option value="full">Full</option>
-        </select>
-      </div>
-
-      
+    
+    <hr />
+    <div className=' flex justify-between items-center'>
+      <h4 className='font-bold'>₹{finalPrice}/-</h4>
+    
+    <div className='flex justify-center items-center mt-2'>
+  <button className='border-gray-400 border-[1px] py-2 px-4 rounded bg-red-600 font-bold hover:text-white' onClick={handleaddcart}>Add Cart</button>
+  </div>
     </div>
   </div>
 </div>
-
-  )
+  </div>
+      )
 }
 
-export default Food
+      export default Food

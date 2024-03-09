@@ -7,7 +7,7 @@ const Footer = () => {
 
 <footer className="bg-gray-400 rounded-lg shadow m-4 dark:bg-gray-100">
     <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-      <span className="text-sm text-gray-900 sm:text-center dark:text-gray-400 inline-flex">© 2023 <p className="hover:underline"> Foodis</p>. All Rights Reserved.
+      <span className="text-sm text-gray-900 sm:text-center dark:text-gray-400 inline-flex">© 2024 <p className="hover:underline"> Foodii</p>. All Rights Reserved.
     </span>
     <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-800 dark:text-gray-400 sm:mt-0">
         <li className=' hover:text-black'>

@@ -9,12 +9,14 @@ const mongoDB = require("./db");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  );  
   next();
 });
 
 app.use(express.json())
 app.use('/api',require("./Routes/Createuser"))
+app.use('/api',require("./Routes/Displaydata"))
+app.use('/api',require("./Routes/OrderData"))
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
